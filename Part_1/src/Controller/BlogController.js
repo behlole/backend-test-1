@@ -89,14 +89,15 @@ module.exports = {
                 throw("Image Path or Token not provided");
             }
             const decoded = jwt.verify(token, secret);
-            const imgData = fs.readFileSync(image_path);
-
-            const base64Img = Buffer.from(imgData).toString('base64');
-            return RequestResponseMappings.returnSuccessMessage(res, {image: base64Img});
+            if (decoded.image_path==image_path){
+                const imgData = fs.readFileSync(image_path);
+                const base64Img = Buffer.from(imgData).toString('base64');
+                return RequestResponseMappings.returnSuccessMessage(res, {image: base64Img});
+            }
+            throw "Bad Token"
         } catch (e) {
             return returnErrorMessage(res, {}, e)
         }
-
     }
 
 }

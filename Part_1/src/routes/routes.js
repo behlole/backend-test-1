@@ -99,7 +99,7 @@ appRouter.post('/',
     compressImage,
     addBlog,
 );
-appRouter.get('/create-token',createTemporaryToken);
-appRouter.get('/image',verifyImage);
+appRouter.post('/create-token',createTemporaryToken);
+appRouter.post('/image',verifyImage);
 
 module.exports = appRouter;
