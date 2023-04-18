@@ -12,7 +12,7 @@ const schema = new mongoose.Schema({
     default: null,
   },
   date_time: String,
-  reference:String
+  reference: String
 }, { timestamps: true });
 
 schema.set('toObject', { virtuals: true });

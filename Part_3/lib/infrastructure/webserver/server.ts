@@ -10,6 +10,7 @@ const createServer = async () => {
   express.request.serviceLocator = serviceLocator;
 
   app.use(express.json({ limit: '50mb' }));
+  app.use(express.static('images'));
   router.use('/api/v1', routesV1);
   app.use(router);
 

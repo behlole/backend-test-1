@@ -26,9 +26,9 @@ export default class Blog extends Entity {
     }) {
         super({ id });
         this.title = title;
-        this.description = title;
-        this.date_time = title;
-        this.main_image = title;
+        this.description = description;
+        this.date_time = date_time;
+        this.main_image = main_image;
         this.additional_images = additional_images;
         this.reference=reference
     }

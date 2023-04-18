@@ -7,6 +7,7 @@ import ListBlogs from "../../application/use_cases/blog/ListBlogs";
 import Blog from "../../domain/entities/Blog";
 import RequestResponseMappings from "../utils/RequestResponseMappings";
 import BlogValidator from "../../domain/validators/BlogValidator";
+import CreateBlog from "../../application/use_cases/blog/createBlog";
 
 
 
@@ -17,16 +18,14 @@ const BlogController = {
     const serviceLocator: ServiceLocator = req.serviceLocator!;
 
     // Treatment
-    const blogs = await ListBlogs(serviceLocator);
+    let blogs = await ListBlogs(serviceLocator);
 
     // Output
-    let output = blogs
-        .map((blog: Blog) => serviceLocator.blogSerializer.serialize(blogs, serviceLocator));
-     output = output.map((singleBlog:any) => {
+     blogs = blogs.map((singleBlog:any) => {
         return (
             {
                 ...singleBlog,
-                date_time: new Date(parseInt(singleBlog.date_time) * 1000)
+                date_time: new Date(singleBlog.date_time * 1000)
                     .toISOString(),
                 title_slug: singleBlog.title.replace(/\s+/g, '_')
             }
@@ -34,7 +33,7 @@ const BlogController = {
     })
     return RequestResponseMappings.returnSuccessMessage(
         res,
-        output
+        blogs
     )
   },
   addBlog: async (req:Request, res:Response) => {
@@ -53,13 +52,14 @@ const BlogController = {
     if (blogSchemaValidationError) {
       return RequestResponseMappings.returnErrorMessage(res, blogSchemaValidationError.details, blogSchemaValidationError.details[0].message);
     }
-    const data = [];
-    req.body.reference = `0000${data.length + 1}`;
-    data.push(req.body);
-    await fs.writeFileSync('blogs.json', JSON.stringify(data));
+    const serviceLocator: ServiceLocator = req.serviceLocator!;
+    const blogs = await ListBlogs(serviceLocator);
+    req.body.reference = `0000${blogs.length + 1}`;
+    await CreateBlog(req.body,serviceLocator);
+    blogs.push(req.body);
     return RequestResponseMappings.returnSuccessMessage(
       res,
-      data.map((singleBlog:any) => ({
+      blogs.map((singleBlog:any) => ({
         ...singleBlog,
         date_time: new Date(singleBlog.date_time * 1000).toISOString(),
         title_slug: singleBlog.title.replace(/\s+/g, '_')
@@ -74,11 +74,13 @@ const BlogController = {
         throw ('Image Path not provided');
       }
       let found = false;
-      // blogs?.forEach((singleBlog:any) => {
-      //   if (singleBlog.main_image === image_path) {
-      //     found = true;
-      //   }
-      // });
+      const serviceLocator: ServiceLocator = req.serviceLocator!;
+      const blogs = await ListBlogs(serviceLocator);
+      blogs?.forEach((singleBlog:any) => {
+        if (singleBlog.main_image === image_path) {
+          found = true;
+        }
+      });
       if (found) {
         const token = await jwt.sign({ image_path }, secret, { expiresIn: '5m' });
         return RequestResponseMappings.returnSuccessMessage(res, { token });

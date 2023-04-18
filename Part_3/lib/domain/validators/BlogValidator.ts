@@ -6,5 +6,6 @@ export default Joi.object({
   description: Joi.string().max(500).required(),
   main_image: Joi.required(),
   date_time: Joi.date().timestamp('unix').required(),
-  additional_images: Joi.array()
+  additional_images: Joi.array(),
+  reference: Joi.string()
 });
