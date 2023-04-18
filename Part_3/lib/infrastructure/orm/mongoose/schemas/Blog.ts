@@ -15,7 +15,7 @@ const schema = new mongoose.Schema({
   reference: String,
   users: [
     {
-      type: [String],
+      type: String,
       ref: 'User'
     }
   ]

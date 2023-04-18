@@ -7,6 +7,9 @@ import UpdateUser from '../../application/use_cases/user/UpdateUser';
 import DeleteUser from '../../application/use_cases/user/DeleteUser';
 import { ServiceLocator } from '../../infrastructure/config/service-locator';
 import User from '../../domain/entities/User';
+import ListBlogs from "../../application/use_cases/blog/ListBlogs";
+import DeleteBlog from "../../application/use_cases/blog/DeleteBlog";
+import {ID} from "../../domain/entities/Entity";
 
 export default {
 
@@ -135,7 +138,7 @@ export default {
     return response.json(output);
   },
 
-  async deleteUser(request: Request, response: Response) {
+  deleteUser: async function (request: Request, response: Response) {
     // Context
     const serviceLocator: ServiceLocator = request.serviceLocator!;
 
@@ -145,13 +148,21 @@ export default {
     // ---------------------------------------------
     // THIS IS HOW TO ACCESS userId FROM AccessToken
     // ---------------------------------------------
-    const userId = request.userId;
+    const userId = request.userId!;
     // ---------------------------------------------
     // ---------------------------------------------
 
     // Treatment
     let user = null;
     try {
+      let blogs = await ListBlogs(serviceLocator);
+      for (const singleBlog of blogs) {
+        // @ts-ignore
+        if (singleBlog.users!.indexOf(userId) > -1) {
+            await DeleteBlog(<ID>singleBlog.id,serviceLocator);
+        }
+      }
+
       user = await DeleteUser(toDeleteUserId, serviceLocator);
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -161,7 +172,7 @@ export default {
 
     // Output
     if (!user) {
-      return response.status(404).json({ message: 'Not Found' });
+      return response.status(404).json({message: 'Not Found'});
     }
     return response.sendStatus(204);
   },
