@@ -10,6 +10,7 @@ export default (schemaEntity: any): Blog | null => {
         description: schemaEntity.description,
         main_image: schemaEntity.main_image,
         additional_images: schemaEntity.additional_images,
-        reference: schemaEntity.reference
+        reference: schemaEntity.reference,
+        users:schemaEntity.users
     });
 };

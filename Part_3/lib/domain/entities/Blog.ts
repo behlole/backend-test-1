@@ -1,4 +1,5 @@
 import Entity, { ID } from './Entity';
+import {ObjectId} from "mongoose";
 export default class Blog extends Entity {
     title: string;
     description: string;
@@ -6,6 +7,7 @@ export default class Blog extends Entity {
     main_image: string;
     additional_images?: string[];
     reference: string;
+    users?:string[]|number[];
 
     constructor({
                     id,
@@ -15,6 +17,7 @@ export default class Blog extends Entity {
                     main_image,
                     additional_images,
                     reference,
+                    users
                 }: {
         id?: ID,
         title: string,
@@ -22,7 +25,8 @@ export default class Blog extends Entity {
         date_time: string,
         main_image: string,
         additional_images: string[],
-        reference:string
+        reference:string,
+        users?:string[]|number[]
     }) {
         super({ id });
         this.title = title;
@@ -31,5 +35,6 @@ export default class Blog extends Entity {
         this.main_image = main_image;
         this.additional_images = additional_images;
         this.reference=reference
+        this.users=users
     }
 };

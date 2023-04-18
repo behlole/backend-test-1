@@ -12,7 +12,13 @@ const schema = new mongoose.Schema({
     default: null,
   },
   date_time: String,
-  reference: String
+  reference: String,
+  users: [
+    {
+      type: [String],
+      ref: 'User'
+    }
+  ]
 }, { timestamps: true });
 
 schema.set('toObject', { virtuals: true });

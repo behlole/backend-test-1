@@ -32,6 +32,7 @@ export default class UserRepositoryMongo implements UserRepository {
       email,
       phone,
       password,
+        blogs
     } = domainEntity;
     const mongooseUser = await MongooseUser.findByIdAndUpdate(
       id,
@@ -41,6 +42,7 @@ export default class UserRepositoryMongo implements UserRepository {
         email,
         phone,
         password,
+        blogs
       },
       {
         new: true,

@@ -1,4 +1,5 @@
 import Entity, { ID } from './Entity';
+import {ObjectId} from "mongoose";
 
 export default class User extends Entity {
   firstName: string;
@@ -7,6 +8,7 @@ export default class User extends Entity {
   phone: string;
   password: string;
   accessToken?: string;
+  blogs?:string[];
 
   constructor({
     id,
@@ -16,6 +18,7 @@ export default class User extends Entity {
     phone,
     password,
     accessToken,
+      blogs,
   }: {
     id?: ID,
     firstName: string,
@@ -24,6 +27,7 @@ export default class User extends Entity {
     phone: string,
     password: string,
     accessToken?: string;
+    blogs?:string[];
   }) {
     super({ id });
     this.firstName = firstName;
@@ -32,5 +36,6 @@ export default class User extends Entity {
     this.phone = phone;
     this.password = password;
     this.accessToken = accessToken;
+    this.blogs=blogs
   }
 };

@@ -13,6 +13,12 @@ const schema = new mongoose.Schema({
     default: null,
   },
   password: String,
+  blogs: [
+    {
+      type: String,
+      ref: 'Blog'
+    }
+  ]
 }, { timestamps: true });
 
 schema.set('toObject', { virtuals: true });

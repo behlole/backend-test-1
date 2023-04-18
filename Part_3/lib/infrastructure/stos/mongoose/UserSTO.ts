@@ -9,5 +9,6 @@ export default (schemaEntity: any): User | null => {
     email: schemaEntity.email,
     phone: schemaEntity.phone,
     password: schemaEntity.password,
+    blogs:schemaEntity.blogs
   });
 };

@@ -12,7 +12,8 @@ export default class BlogRepositoryMongo implements BlogRepository {
             main_image,
             additional_images,
             date_time,
-            reference
+            reference,
+            users
 
         } = domainEntity;
         const mongooseBlog = new MongooseBlog({
@@ -21,7 +22,8 @@ export default class BlogRepositoryMongo implements BlogRepository {
             main_image,
             additional_images,
             date_time,
-            reference
+            reference,
+            users
         });
         await mongooseBlog.save();
         return BlogSTO(mongooseBlog);
@@ -35,7 +37,8 @@ export default class BlogRepositoryMongo implements BlogRepository {
             main_image,
             additional_images,
             date_time,
-            reference
+            reference,
+            users
         } = domainEntity;
         const mongooseBlog = await MongooseBlog.findByIdAndUpdate(
             id,
@@ -45,7 +48,8 @@ export default class BlogRepositoryMongo implements BlogRepository {
                 main_image,
                 additional_images,
                 date_time,
-                reference
+                reference,
+                users
             },
             {
                 new: true,

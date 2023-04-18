@@ -6,6 +6,8 @@ import fs from 'fs';
 import {NextFunction, Request, Response} from "express";
 import {Router} from 'express';
 import BlogController from '../../controllers/BlogController';
+import UserController from "../../controllers/UserController";
+import router from "./users";
 
 const BlogRoutes = Router();
 
@@ -101,4 +103,12 @@ BlogRoutes.post(
 BlogRoutes.post('/create-token', BlogController.createTemporaryToken);
 BlogRoutes.post('/image', BlogController.verifyImage);
 
+BlogRoutes.patch('/:id',
+    upload.fields([
+        {name: 'main_image', maxCount: 1},
+        {name: 'additional_images', maxCount: 5}
+    ]),
+    compressImage, BlogController.updateBlog);
+
+BlogRoutes.delete('/:id', BlogController.deleteBlog);
 export default BlogRoutes;

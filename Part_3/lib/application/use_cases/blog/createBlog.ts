@@ -11,6 +11,7 @@ export default async (blogData: any, { blogRepository }: ServiceLocator) => {
         main_image: blogData.main_image,
         reference: blogData.reference,
         title: blogData.title,
+        users:blogData.users
 
     });
     return blogRepository!.persist(blog);
