@@ -61,7 +61,7 @@ module.exports = {
     createTemporaryToken: async (req, res) => {
         try {
             let {image_path} = req.body;
-            let secret = process.env.JWT_SECRET;
+            let secret = process.env.JWT_SECRET_KEY;
             if (!image_path && secret) {
                 throw("Image Path not provided");
             }
@@ -84,7 +84,7 @@ module.exports = {
     verifyImage: async (req, res) => {
         try {
             let {image_path, token} = req.body;
-            let secret = process.env.JWT_SECRET;
+            let secret = process.env.JWT_SECRET_KEY;
             if (!image_path || !token || !secret) {
                 throw("Image Path or Token not provided");
             }
